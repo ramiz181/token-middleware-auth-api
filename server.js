@@ -4,8 +4,6 @@ import dotenv from 'dotenv'
 import adminRouter from './src/routes/admin.routes.js';
 import { Admin } from './src/models/admin.model.js';
 import { Product } from './src/models/products.model.js';
-import { authentication, authorization } from './src/middlewares/authenticationAndAuthorization.middleware.js';
-
 
 const app = express()
 const PORT = 5000
