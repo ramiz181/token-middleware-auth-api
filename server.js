@@ -3,6 +3,8 @@ import { dbConnection } from './src/config/db.config.js';
 import dotenv from 'dotenv'
 import adminRouter from './src/routes/admin.routes.js';
 import { Admin } from './src/models/admin.model.js';
+import { Product } from './src/models/products.model.js';
+import { authentication, authorization } from './src/middlewares/authenticationAndAuthorization.middleware.js';
 
 
 const app = express()
@@ -18,14 +20,22 @@ app.use(express.json())
 
 app.get('/temp', async (req, res) => {
 
+    const { _id, productName, productPrice, productCategory } = req.body
 
-    const { email, password, role } = req.body
-
-    await Admin.create({
-        email,
-        password,
-        role,
+    await Product.create({
+        _id,
+        productName,
+        productPrice,
+        productCategory
     })
+
+    // const { email, password, role } = req.body
+
+    // await Admin.create({
+    //     email,
+    //     password,
+    //     role,
+    // })
 
     res.send("temporary route")
 })

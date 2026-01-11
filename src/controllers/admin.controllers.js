@@ -1,5 +1,6 @@
 import { Admin } from "../models/admin.model.js"
 import { nanoid } from "nanoid"
+import fs from 'fs'
 
 
 export const handleAdminLogin = async (req, res) => {
@@ -20,19 +21,27 @@ export const handleAdminLogin = async (req, res) => {
         }
 
         const authToken = nanoid(20)
-        res.setHeader('token', authToken),
 
-            await Admin.findOneAndUpdate({ email }, {
-                status: 'online',
-                token: authToken,
-            })
+        const tokenFile = [{ token: authToken }]
+
+        fs.writeFile('./authToken.json', JSON.stringify(tokenFile), (err) => {
+            if (err) throw err
+        })
+
+        res.setHeader('token', authToken)
 
         // RN I don't have any frontend....that's why response mn sy he heades get kr rha....
         // originally we send headers to client and client save it in localstorage, cookies etc
-        // console.log("line 28", res.getHeaders());
+        console.log("line 28", res.getHeaders());
+
+        await Admin.findOneAndUpdate({ email }, {
+            status: 'online',
+            token: authToken,
+        })
         res.status(200).json({ sucess: "true", message: "user login" })
 
     } catch (error) {
         res.status(500).json({ error: `Server error ${error}` });
     }
 }
+
