@@ -1,0 +1,38 @@
+
+
+Client → Middleware → Route Handler → Response
+
+Ste-pby-step flow of program
+
+
+
+/v1/admin/login/ → public   ==> admin ko login krwa dya
+
+    ==> user enter credentials
+    ==> server verifies it with DB
+    ==> send secret key in response headers (can be generated using nanoid ==> random string generator)
+
+
+/v1/admin/product/:productID → protected
+    ==> route to delete product
+
+    ==> run Middleware:
+            ==> validate user role & status
+            ==> authenticate user
+            ==> authorize user
+
+    ==> route handler function
+
+
+
+Middleware Logic Breakdown
+
+    Validation:
+        ==> if header exist
+                ==>> authentic user
+
+        ==> if header esixts valid key/token
+                ==>> authorizr user
+
+    if validation pass:
+        ==> allow the protected route
